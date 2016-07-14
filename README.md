@@ -8,6 +8,7 @@ For short, using `FindThreads` module. `find_package(Threads REQUIRED)` and `${C
 In cmake, `find_package` can be used to search two forms of packages, Config-file packages and Find-module packages.
 Config-file is provided by upstreams, a Foo lib may provide such a config file:
 > <prefix>/lib/cmake/foo-1.2/FooConfig.cmake
+
 > <prefix>/lib/cmake/foo-1.3/FooConfigVersion.cmake // optinal package version file
 
 You can find this library by using `find_package(Foo)`. And using `CONFIG` to specify using config-file only if necessary:
@@ -19,6 +20,7 @@ Similarly using `MODULE` to only use find-module form. For instance: `find_packa
 
 Besides, `pkg-config` is supported by `FindPkgConfig` module that provides a macro named `pkg_check_modules`. Usage:
 > find_package(PkgConfig REQUIRED)
+
 > pkg_check_modules(GLIB glib-2.0)
 
 ## Useful links
@@ -63,11 +65,15 @@ The maximum number of threads that may be created by a process is implementation
 * If a thread requires joining, consider explicitly creating it as joinable. This provides protability as not all implementation may create threads as joinable by default.
 * If you known in advance that a thread will never need to join with another thread, consider creating it in a detached state. Some system resources may be able to freed.
 
+# Utils
+
 `pthread_self()` returns the unique, system assigned thread ID of the calling thread.
 
 `pthread_equal` compares two thread IDs, if equal, return non-zero value, else return zero. Because thread IDs are opaque objects, the C language equivalence operator == should not be used to compare to other thread IDs or other value.
 
 `pthread_once` executes the init exactly once in a process.
+
+# Mutex and Condition Variable
 
 `pthread_mutex_unlock` will error if:
   - the mutex is already unlocked
@@ -78,6 +84,8 @@ Condition variables provide yet another way for thread to synchronize. While mut
 without condition variables, the programmer would need to have threads continually pool, to check if the condition is met. This can be very resource consuming since the thread would be continuously busy in activity.
 
 A condition variables is always used in conjunction with a mutex lock.
+
+Condition Variable Usage:
 
 In thread Main:
 * declaring and initializing global data
